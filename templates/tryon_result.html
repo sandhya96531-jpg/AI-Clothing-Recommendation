@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Virtual Try-On Result | AI Style</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<header class="site-header">
+
+    <div class="container header-inner">
+
+        <a href="{{ url_for('home') }}" class="brand">
+            AI<span>Style</span>
+        </a>
+
+        <nav class="main-nav">
+
+            <a href="{{ url_for('profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('favourites') }}">
+                Favourites
+            </a>
+
+            <a href="{{ url_for('privacy') }}">
+                Privacy
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section class="page-heading">
+
+        <div class="eyebrow">
+            STEP 04 · AI VIRTUAL TRY-ON
+        </div>
+
+        <h1>
+            Your Virtual Try-On
+        </h1>
+
+        <p>
+            Here is the generated preview of your selected outfit.
+        </p>
+
+    </section>
+
+
+    <!-- RESULT IMAGE -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h2>
+                ✨ AI Generated Result
+            </h2>
+
+        </div>
+
+
+        <div
+            style="
+                width: 100%;
+                min-height: 650px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f5f2ee;
+                border-radius: 20px;
+                overflow: hidden;
+            "
+        >
+
+            <img
+                src="{{ result_image }}"
+                alt="AI generated virtual try-on result"
+                style="
+                    max-width: 100%;
+                    max-height: 850px;
+                    width: auto;
+                    height: auto;
+                    display: block;
+                    object-fit: contain;
+                "
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- OUTFIT DETAILS -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h2>
+                👗 Selected Outfit
+            </h2>
+
+        </div>
+
+
+        <div>
+
+            <div class="eyebrow">
+                {{ outfit.category }} · {{ outfit.occasion }}
+            </div>
+
+            <h2>
+                {{ outfit.outfit_name }}
+            </h2>
+
+            {% if outfit.price %}
+                <h3>
+                    ₹{{ outfit.price|int }}
+                </h3>
+            {% endif %}
+
+        </div>
+
+
+        <div
+            style="
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 20px;
+            "
+        >
+
+            {% if outfit.colour %}
+                <span class="tag">
+                    🎨 {{ outfit.colour }}
+                </span>
+            {% endif %}
+
+            {% if outfit.pattern %}
+                <span class="tag">
+                    ✨ {{ outfit.pattern }}
+                </span>
+            {% endif %}
+
+            {% if outfit.style %}
+                <span class="tag">
+                    👗 {{ outfit.style }}
+                </span>
+            {% endif %}
+
+            {% if outfit.fit %}
+                <span class="tag">
+                    🧵 {{ outfit.fit }}
+                </span>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- SUCCESS MESSAGE -->
+
+    <section class="card">
+
+        <h2>
+            🎉 Virtual Try-On Completed
+        </h2>
+
+        <p>
+            The AI model has generated a virtual preview
+            using your uploaded photo and the selected outfit.
+        </p>
+
+        <p class="muted">
+            The generated result is an AI-based preview.
+            Actual appearance may vary depending on lighting,
+            pose, clothing details and image quality.
+        </p>
+
+    </section>
+
+
+    <!-- BUTTONS -->
+
+    <div
+        style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 30px 0 60px;
+        "
+    >
+
+        <a
+            href="{{ url_for('outfit', outfit_id=outfit.outfit_id) }}"
+            class="button"
+        >
+            ← Back to Outfit
+        </a>
+
+        <a
+            href="{{ url_for('recommendations') }}"
+            class="button secondary"
+        >
+            ← More Recommendations
+        </a>
+
+    </div>
+
+</main>
+
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <span>
+            © 2026 AI Style
+        </span>
+
+        <a href="{{ url_for('privacy') }}">
+            Privacy & Security
+        </a>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

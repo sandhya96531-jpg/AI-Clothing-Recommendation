@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+.env
+
+storage/database/*.db
+
+storage/encrypted_photos/*
+storage/encrypted_tryons/*
+storage/temp/*
+
+!storage/encrypted_photos/.gitkeep
+!storage/encrypted_tryons/.gitkeep
+!storage/temp/.gitkeep
+
+.vscode/
+.idea/

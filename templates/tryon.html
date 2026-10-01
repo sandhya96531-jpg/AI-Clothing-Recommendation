@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Virtual Try-On | AI Style</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        .tryon-page {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 50px 24px 80px;
+        }
+
+        .tryon-header {
+            margin-bottom: 35px;
+        }
+
+        .page-label {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .tryon-header h1 {
+            font-size: 45px;
+            margin: 0 0 15px;
+        }
+
+        .tryon-header p {
+            color: #666;
+            line-height: 1.7;
+            max-width: 750px;
+        }
+
+        .tryon-card {
+            background: #faf8f6;
+            border: 1px solid #e8e2dd;
+            border-radius: 22px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .tryon-card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .photo-preview {
+            min-height: 430px;
+            background: #f1eeeb;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            max-height: 650px;
+            object-fit: contain;
+            border-radius: 18px;
+        }
+
+        .outfit-preview {
+            min-height: 300px;
+            background: #f1eeeb;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .outfit-icon {
+            font-size: 120px;
+        }
+
+        .outfit-info {
+            margin-top: 20px;
+        }
+
+        .outfit-category {
+            color: #777;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .outfit-info h2 {
+            margin-bottom: 8px;
+            font-size: 27px;
+        }
+
+        .price {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .details span {
+            background: white;
+            border: 1px solid #e5dfda;
+            padding: 7px 11px;
+            border-radius: 18px;
+            font-size: 12px;
+        }
+
+        .result-card {
+            background: #faf8f6;
+            border: 1px solid #e8e2dd;
+            border-radius: 22px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .result-card h2 {
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .result-image-box {
+            background: #f1eeeb;
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .result-image {
+            width: 100%;
+            max-width: 800px;
+            max-height: 850px;
+            object-fit: contain;
+            border-radius: 14px;
+        }
+
+        .result-success {
+            margin-top: 18px;
+            padding: 15px 18px;
+            background: #f4f8f3;
+            border: 1px solid #d5e4d2;
+            border-radius: 12px;
+            color: #40543c;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .status-card {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f7f4f1;
+            border-radius: 16px;
+        }
+
+        .status-card strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .status-card p {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .notice {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 14px;
+            background: #fff8e8;
+            border: 1px solid #ead9a8;
+            color: #66552a;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .tryon-actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tryon-actions form {
+            margin: 0;
+        }
+
+        .primary-button,
+        .secondary-button {
+            display: inline-block;
+            padding: 13px 19px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .primary-button {
+            border: none;
+            background: #111;
+            color: white;
+            cursor: pointer;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #111;
+            border: 1px solid #ccc;
+        }
+
+        .processing-note {
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI<span>Style</span>
+    </div>
+
+    <nav>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/favourites">
+            Favourites
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="tryon-page">
+
+
+    <!-- PAGE HEADER -->
+
+    <section class="tryon-header">
+
+        <p class="page-label">
+            STEP 04
+        </p>
+
+        <h1>
+            Virtual Try-On
+        </h1>
+
+        <p>
+            Preview your selected outfit using your
+            uploaded photo and the AI garment-transfer
+            model.
+        </p>
+
+    </section>
+
+
+
+    <!-- GENERATED RESULT -->
+
+    {% if generated_result %}
+
+    <section class="result-card">
+
+        <h2>
+            ✨ Your Virtual Try-On Result
+        </h2>
+
+
+        <div class="result-image-box">
+
+            <img
+                src="{{ url_for('tryon_result') }}"
+                alt="Generated virtual try-on result"
+                class="result-image"
+            >
+
+        </div>
+
+
+        <div class="result-success">
+
+            <strong>
+                ✓ Virtual try-on generated successfully
+            </strong>
+
+            <br>
+
+            The selected outfit has been processed
+            using the configured IDM-VTON garment-transfer
+            model.
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+
+    <!-- USER PHOTO -->
+
+    <section class="tryon-card">
+
+        <h2>
+            📸 Your Photo
+        </h2>
+
+
+        <div class="photo-preview">
+
+            {% if photo_available %}
+
+                <img
+                    src="{{ url_for('user_photo') }}"
+                    alt="Your uploaded photo"
+                >
+
+            {% else %}
+
+                <div>
+                    📷
+                    <br><br>
+                    No photo available.
+                    Please upload your photo first.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SELECTED OUTFIT -->
+
+    <section class="tryon-card">
+
+        <h2>
+            👗 Selected Outfit
+        </h2>
+
+
+        {% if outfit %}
+
+
+            <div class="outfit-preview">
+
+                <div class="outfit-icon">
+
+                    {% if outfit.clothing_type and
+                          'Dress' in outfit.clothing_type %}
+
+                        👗
+
+                    {% elif outfit.clothing_type and
+                          ('Trouser' in outfit.clothing_type or
+                           'Pant' in outfit.clothing_type) %}
+
+                        👖
+
+                    {% elif outfit.clothing_type and
+                          ('Shirt' in outfit.clothing_type or
+                           'Top' in outfit.clothing_type) %}
+
+                        👚
+
+                    {% elif outfit.clothing_type and
+                          'Traditional' in outfit.clothing_type %}
+
+                        🥻
+
+                    {% else %}
+
+                        👕
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="outfit-info">
+
+                <div class="outfit-category">
+
+                    {{ outfit.category }}
+
+                    ·
+
+                    {{ outfit.occasion or 'Everyday' }}
+
+                </div>
+
+
+                <h2>
+
+                    {{ outfit.outfit_name }}
+
+                </h2>
+
+
+                <div class="price">
+
+                    ₹{{ '%.0f'|format(outfit.price or 0) }}
+
+                </div>
+
+
+                <div class="details">
+
+                    {% if outfit.colour %}
+
+                        <span>
+                            🎨 {{ outfit.colour }}
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if outfit.style %}
+
+                        <span>
+                            ✨ {{ outfit.style }}
+                        </span>
+
+                    {% endif %}
+
+
+                    {% if outfit.fit %}
+
+                        <span>
+                            👕 {{ outfit.fit }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        {% else %}
+
+            <div>
+
+                <div class="outfit-icon">
+                    👗
+                </div>
+
+                <strong>
+                    No outfit selected
+                </strong>
+
+                <p>
+                    Go back to Recommendations
+                    and select an outfit.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    {% if outfit %}
+
+
+        <!-- STATUS -->
+
+        <section class="status-card">
+
+            {% if generated_result %}
+
+                <strong>
+                    ✓ Virtual Try-On Complete
+                </strong>
+
+                <p>
+                    Your generated result is displayed above.
+                    You can try another outfit from the
+                    recommendations page.
+                </p>
+
+            {% else %}
+
+                <strong>
+                    ✨ Virtual Try-On Ready
+                </strong>
+
+                <p>
+                    Your photo and selected outfit are
+                    successfully connected. Click
+                    "Generate Virtual Try-On" to create
+                    the preview.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- PRIVACY NOTICE -->
+
+        <div class="notice">
+
+            <strong>
+                Important:
+            </strong>
+
+            The selected photo is processed by the
+            configured IDM-VTON hosted service to
+            generate the virtual try-on preview.
+
+        </div>
+
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="tryon-actions">
+
+
+            {% if not generated_result %}
+
+            <form
+                method="POST"
+                action="/generate-tryon"
+            >
+
+                <input
+                    type="hidden"
+                    name="clothing_id"
+                    value="{{ outfit.id }}"
+                >
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+
+                    ✨ Generate Virtual Try-On
+
+                </button>
+
+            </form>
+
+            {% endif %}
+
+
+            <a
+                href="/outfit?outfit_id={{ outfit.outfit_id }}"
+                class="secondary-button"
+            >
+
+                ← Back to Outfit
+
+            </a>
+
+
+            <a
+                href="/recommendations"
+                class="secondary-button"
+            >
+
+                ← More Recommendations
+
+            </a>
+
+
+        </div>
+
+
+        {% if not generated_result %}
+
+        <p class="processing-note">
+
+            ⏳ Generation may take some time because
+            the virtual try-on model is hosted remotely.
+
+        </p>
+
+        {% endif %}
+
+
+    {% else %}
+
+
+        <div class="tryon-actions">
+
+            <a
+                href="/recommendations"
+                class="primary-button"
+            >
+
+                ← Select an Outfit
+
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</main>
+
+
+
+<footer>
+
+    <div>
+        © 2026 AI Style
+    </div>
+
+    <a href="/privacy">
+        Privacy &amp; Security
+    </a>
+
+</footer>
+
+
+</body>
+
+</html>

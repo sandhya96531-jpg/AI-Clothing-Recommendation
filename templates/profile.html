@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | AI Style</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI<span>Style</span>
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/favourites">
+            Favourites
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="profile-page">
+
+
+    <div class="profile-header">
+
+        <div>
+
+            <p class="page-label">
+                MY STYLE PROFILE
+            </p>
+
+            <h1>
+                Your Personal Style
+            </h1>
+
+            <p>
+                Manage your information and AI fashion profile.
+            </p>
+
+        </div>
+
+
+        <button class="outline-button">
+            Edit Profile
+        </button>
+
+    </div>
+
+
+
+    <section class="profile-grid">
+
+
+        <!-- BASIC INFORMATION -->
+
+        <div class="profile-card">
+
+            <div class="card-heading">
+
+                <div class="card-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <h2>
+                        Basic Information
+                    </h2>
+
+                    <p>
+                        Your account details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-details">
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Full Name
+                    </span>
+
+                    <strong>
+                        {{ user["full_name"] }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <strong>
+                        {{ user["email"] }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-row">
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+                            {{ user["category"] if user["category"] else "Not Analysed" }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Age
+                        </span>
+
+                        <strong>
+                            {{ user["age"] if user["age"] else "Not Added" }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AI STYLE PROFILE -->
+
+        <div class="profile-card">
+
+            <div class="card-heading">
+
+                <div class="card-icon">
+                    ✨
+                </div>
+
+                <div>
+
+                    <h2>
+                        AI Style Profile
+                    </h2>
+
+                    <p>
+                        Your clothing characteristics
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="analysis-status">
+
+                <div class="status-icon">
+                    ✦
+                </div>
+
+                <div>
+
+                    <strong>
+                        AI Analysis Pending
+                    </strong>
+
+                    <p>
+                        Upload a photo to generate
+                        your personalized style profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="/upload"
+                class="primary-button profile-button"
+            >
+
+                Analyse My Style →
+
+            </a>
+
+
+        </div>
+
+
+
+    </section>
+
+
+
+    <!-- PROFILE CHARACTERISTICS -->
+
+    <section class="profile-card characteristics-card">
+
+
+        <div class="card-heading">
+
+            <div class="card-icon">
+                🎨
+            </div>
+
+            <div>
+
+                <h2>
+                    Style Characteristics
+                </h2>
+
+                <p>
+                    These will be generated after AI analysis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="characteristics-grid">
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    👩
+                </span>
+
+                <span class="characteristic-label">
+                    Category
+                </span>
+
+                <strong>
+                    Pending
+                </strong>
+
+            </div>
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    🎨
+                </span>
+
+                <span class="characteristic-label">
+                    Skin Tone
+                </span>
+
+                <strong>
+                    Pending
+                </strong>
+
+            </div>
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    🌡️
+                </span>
+
+                <span class="characteristic-label">
+                    Undertone
+                </span>
+
+                <strong>
+                    Pending
+                </strong>
+
+            </div>
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    👤
+                </span>
+
+                <span class="characteristic-label">
+                    Body Shape
+                </span>
+
+                <strong>
+                    Pending
+                </strong>
+
+            </div>
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    📏
+                </span>
+
+                <span class="characteristic-label">
+                    Height
+                </span>
+
+                <strong>
+                    Enter Manually
+                </strong>
+
+            </div>
+
+
+            <div class="characteristic">
+
+                <span class="characteristic-icon">
+                    📐
+                </span>
+
+                <span class="characteristic-label">
+                    Proportions
+                </span>
+
+                <strong>
+                    Pending
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- FASHION PREFERENCES -->
+
+    <section class="profile-card preferences-card">
+
+
+        <div class="card-heading">
+
+            <div class="card-icon">
+                💗
+            </div>
+
+            <div>
+
+                <h2>
+                    Fashion Preferences
+                </h2>
+
+                <p>
+                    Tell AI what you like.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="preference-grid">
+
+
+            <div class="preference-item">
+
+                <label>
+                    Preferred Style
+                </label>
+
+                <select>
+
+                    <option>
+                        Select Style
+                    </option>
+
+                    <option>
+                        Casual
+                    </option>
+
+                    <option>
+                        Formal
+                    </option>
+
+                    <option>
+                        Traditional
+                    </option>
+
+                    <option>
+                        Streetwear
+                    </option>
+
+                    <option>
+                        Minimal
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="preference-item">
+
+                <label>
+                    Occasion
+                </label>
+
+                <select>
+
+                    <option>
+                        Select Occasion
+                    </option>
+
+                    <option>
+                        Everyday
+                    </option>
+
+                    <option>
+                        Office
+                    </option>
+
+                    <option>
+                        Party
+                    </option>
+
+                    <option>
+                        Wedding
+                    </option>
+
+                    <option>
+                        College
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="preference-item">
+
+                <label>
+                    Budget
+                </label>
+
+                <select>
+
+                    <option>
+                        Select Budget
+                    </option>
+
+                    <option>
+                        Under ₹1,000
+                    </option>
+
+                    <option>
+                        ₹1,000 – ₹2,500
+                    </option>
+
+                    <option>
+                        ₹2,500 – ₹5,000
+                    </option>
+
+                    <option>
+                        ₹5,000+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <button class="auth-button preference-button">
+
+            Save Preferences
+
+        </button>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <div>
+        © 2026 AI Style
+    </div>
+
+    <a href="/privacy">
+        Privacy & Security
+    </a>
+
+</footer>
+
+
+</body>
+
+</html>

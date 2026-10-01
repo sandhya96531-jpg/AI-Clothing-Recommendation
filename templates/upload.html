@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Photo | AI Style</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI<span>Style</span>
+    </div>
+
+    <nav>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/favourites">
+            Favourites
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="upload-page">
+
+
+    <div class="upload-heading">
+
+        <p class="page-label">
+            STEP 01
+        </p>
+
+        <h1>
+            Let's Understand
+            <span>Your Style.</span>
+        </h1>
+
+        <p>
+            Upload a clear photo or capture one using your camera.
+            Our AI will analyse clothing-related characteristics
+            to personalize your recommendations.
+        </p>
+
+    </div>
+
+
+
+    <section class="upload-card">
+
+
+        <!-- REAL UPLOAD FORM -->
+
+        <form
+            id="photo-form"
+            method="POST"
+            action="/upload-photo"
+            enctype="multipart/form-data"
+        >
+
+
+            <div class="upload-options">
+
+
+                <!-- UPLOAD -->
+
+                <div class="upload-option">
+
+                    <div class="upload-icon">
+                        📷
+                    </div>
+
+                    <h2>
+                        Upload a Photo
+                    </h2>
+
+                    <p>
+                        Choose a photo from your device.
+                    </p>
+
+
+                    <label
+                        for="photo-upload"
+                        class="primary-button upload-button"
+                    >
+
+                        Choose Photo
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="photo-upload"
+                        name="photo"
+                        accept="image/jpeg,image/png,image/webp"
+                        hidden
+                    >
+
+
+                    <small>
+                        JPG, PNG or WEBP • Max 10 MB
+                    </small>
+
+                </div>
+
+
+
+                <div class="upload-divider">
+
+                    <span>
+                        OR
+                    </span>
+
+                </div>
+
+
+
+                <!-- CAMERA -->
+
+                <div class="upload-option">
+
+                    <div class="upload-icon">
+                        📹
+                    </div>
+
+                    <h2>
+                        Use Your Camera
+                    </h2>
+
+                    <p>
+                        Capture a new photo using your device camera.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        class="secondary-upload-button"
+                        id="camera-button"
+                    >
+
+                        Open Camera
+
+                    </button>
+
+
+                    <small>
+                        Camera access will be requested securely.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CAMERA AREA -->
+
+            <div
+                id="camera-container"
+                class="camera-container"
+                style="display: none;"
+            >
+
+                <video
+                    id="camera-video"
+                    class="camera-video"
+                    autoplay
+                    playsinline
+                ></video>
+
+
+                <div class="camera-controls">
+
+                    <button
+                        type="button"
+                        id="capture-button"
+                        class="primary-button"
+                    >
+                        Capture Photo
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="close-camera-button"
+                        class="secondary-upload-button"
+                    >
+                        Close Camera
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PHOTO PREVIEW -->
+
+            <div
+                class="photo-preview"
+                id="photo-preview"
+            >
+
+                <div class="preview-placeholder">
+
+                    <span>
+                        🖼️
+                    </span>
+
+                    <p>
+                        Your photo preview will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HIDDEN CAMERA PHOTO -->
+
+            <input
+                type="hidden"
+                id="photo-source"
+                name="photo_source"
+                value="upload"
+            >
+
+
+
+            <!-- HEIGHT -->
+
+            <div class="height-section">
+
+
+                <div class="height-heading">
+
+                    <div>
+
+                        <h2>
+                            Enter Your Height
+                        </h2>
+
+                        <p>
+                            Height is entered manually for better
+                            clothing proportion recommendations.
+                        </p>
+
+                    </div>
+
+
+                    <span class="manual-badge">
+                        MANUAL INPUT
+                    </span>
+
+                </div>
+
+
+
+                <div class="height-input-row">
+
+                    <input
+                        type="number"
+                        id="height"
+                        name="height"
+                        min="50"
+                        max="250"
+                        step="0.1"
+                        placeholder="Enter height"
+                        required
+                    >
+
+
+                    <select
+                        id="height-unit"
+                        name="height_unit"
+                    >
+
+                        <option value="cm">
+                            Centimetres (cm)
+                        </option>
+
+                        <option value="ft">
+                            Feet / Inches
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="height-note">
+
+                    ℹ️ The system does not calculate exact height
+                    from your photograph.
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CONTINUE -->
+
+            <button
+                type="submit"
+                class="continue-button"
+                id="continue-button"
+            >
+
+                Continue to AI Analysis →
+
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <div>
+        © 2026 AI Style
+    </div>
+
+    <a href="/privacy">
+        Privacy & Security
+    </a>
+
+</footer>
+
+
+
+<script>
+
+const photoInput =
+    document.getElementById("photo-upload");
+
+const preview =
+    document.getElementById("photo-preview");
+
+const photoSource =
+    document.getElementById("photo-source");
+
+const cameraButton =
+    document.getElementById("camera-button");
+
+const cameraContainer =
+    document.getElementById("camera-container");
+
+const cameraVideo =
+    document.getElementById("camera-video");
+
+const captureButton =
+    document.getElementById("capture-button");
+
+const closeCameraButton =
+    document.getElementById("close-camera-button");
+
+const photoForm =
+    document.getElementById("photo-form");
+
+
+let cameraStream = null;
+
+
+/* =========================================================
+   NORMAL PHOTO UPLOAD
+   ========================================================= */
+
+photoInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    /* Check file size */
+
+    const maxSize =
+        10 * 1024 * 1024;
+
+
+    if (file.size > maxSize) {
+
+        alert("Photo size must be 10 MB or less.");
+
+        photoInput.value = "";
+
+        return;
+    }
+
+
+    /* Check file type */
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+
+    if (!allowedTypes.includes(file.type)) {
+
+        alert("Please select a JPG, PNG or WEBP image.");
+
+        photoInput.value = "";
+
+        return;
+    }
+
+
+    /* Show preview */
+
+    const imageURL =
+        URL.createObjectURL(file);
+
+
+    preview.innerHTML = `
+        <img
+            src="${imageURL}"
+            alt="Selected photo"
+            class="preview-image"
+        >
+    `;
+
+
+    photoSource.value = "upload";
+
+});
+
+
+
+/* =========================================================
+   OPEN CAMERA
+   ========================================================= */
+
+cameraButton.addEventListener("click", async function () {
+
+    try {
+
+        cameraContainer.style.display = "block";
+
+
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "user"
+                },
+                audio: false
+            });
+
+
+        cameraVideo.srcObject =
+            cameraStream;
+
+
+    } catch (error) {
+
+        cameraContainer.style.display = "none";
+
+        alert(
+            "Unable to access camera. Please allow camera permission and try again."
+        );
+
+        console.error(error);
+
+    }
+
+});
+
+
+
+/* =========================================================
+   CAPTURE PHOTO
+   ========================================================= */
+
+captureButton.addEventListener("click", function () {
+
+    if (!cameraStream) {
+
+        alert("Camera is not active.");
+
+        return;
+    }
+
+
+    const canvas =
+        document.createElement("canvas");
+
+
+    canvas.width =
+        cameraVideo.videoWidth;
+
+    canvas.height =
+        cameraVideo.videoHeight;
+
+
+    const context =
+        canvas.getContext("2d");
+
+
+    context.drawImage(
+        cameraVideo,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.toBlob(function (blob) {
+
+        if (!blob) {
+
+            alert("Unable to capture photo.");
+
+            return;
+        }
+
+
+        const capturedFile =
+            new File(
+                [blob],
+                "camera_capture.jpg",
+                {
+                    type: "image/jpeg"
+                }
+            );
+
+
+        /* Put captured image into file input */
+
+        const dataTransfer =
+            new DataTransfer();
+
+
+        dataTransfer.items.add(
+            capturedFile
+        );
+
+
+        photoInput.files =
+            dataTransfer.files;
+
+
+        /* Preview */
+
+        const imageURL =
+            URL.createObjectURL(blob);
+
+
+        preview.innerHTML = `
+            <img
+                src="${imageURL}"
+                alt="Captured photo"
+                class="preview-image"
+            >
+        `;
+
+
+        photoSource.value =
+            "camera";
+
+
+        stopCamera();
+
+
+    }, "image/jpeg", 0.92);
+
+});
+
+
+
+/* =========================================================
+   CLOSE CAMERA
+   ========================================================= */
+
+closeCameraButton.addEventListener(
+    "click",
+    function () {
+
+        stopCamera();
+
+    }
+);
+
+
+
+/* =========================================================
+   STOP CAMERA
+   ========================================================= */
+
+function stopCamera() {
+
+    if (cameraStream) {
+
+        cameraStream
+            .getTracks()
+            .forEach(function (track) {
+
+                track.stop();
+
+            });
+
+        cameraStream = null;
+
+    }
+
+
+    cameraVideo.srcObject = null;
+
+    cameraContainer.style.display =
+        "none";
+
+}
+
+
+
+/* =========================================================
+   FORM VALIDATION
+   ========================================================= */
+
+photoForm.addEventListener("submit", function (event) {
+
+    const photo =
+        photoInput.files[0];
+
+    const height =
+        document.getElementById("height").value;
+
+
+    if (!photo) {
+
+        event.preventDefault();
+
+        alert(
+            "Please upload or capture a photo."
+        );
+
+        return;
+    }
+
+
+    if (!height) {
+
+        event.preventDefault();
+
+        alert(
+            "Please enter your height."
+        );
+
+        return;
+    }
+
+
+    const heightValue =
+        Number(height);
+
+
+    if (
+        heightValue < 50 ||
+        heightValue > 250
+    ) {
+
+        event.preventDefault();
+
+        alert(
+            "Please enter a valid height between 50 cm and 250 cm."
+        );
+
+        return;
+    }
+
+
+    /* Stop camera before submitting */
+
+    stopCamera();
+
+});
+
+
+/* =========================================================
+   CLEANUP
+   ========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        stopCamera();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

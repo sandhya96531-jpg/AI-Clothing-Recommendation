@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ outfit.outfit_name }} | AI Style</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+
+        .outfit-details-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 50px 24px 80px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: #000;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 45px;
+            align-items: start;
+        }
+
+        .product-visual {
+            position: sticky;
+            top: 25px;
+        }
+
+        .product-box {
+            min-height: 520px;
+            border-radius: 25px;
+            background: #f3efeb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 150px;
+            border: 1px solid #e8e2dd;
+        }
+
+        .eyebrow {
+            color: #777;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .detail-content h1 {
+            font-size: 42px;
+            line-height: 1.15;
+            margin: 0 0 15px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .description {
+            color: #666;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            background: #f5f2ef;
+            border: 1px solid #e8e2dd;
+            border-radius: 20px;
+            padding: 8px 13px;
+            font-size: 12px;
+        }
+
+        .info-card {
+            background: #faf8f6;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 18px;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            gap: 15px;
+            padding: 11px 0;
+            border-bottom: 1px solid #e8e3df;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: #555;
+        }
+
+        .why-box {
+            background: #f7f4f1;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .why-box strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .why-box p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .primary-button,
+        .secondary-button {
+            display: inline-block;
+            text-decoration: none;
+            padding: 13px 19px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .primary-button {
+            background: #111;
+            color: white;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #111;
+            border: 1px solid #ccc;
+        }
+
+        @media (max-width: 800px) {
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-visual {
+                position: static;
+            }
+
+            .product-box {
+                min-height: 350px;
+                font-size: 110px;
+            }
+
+            .detail-content h1 {
+                font-size: 34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="logo">
+        AI<span>Style</span>
+    </div>
+
+    <nav>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/favourites">
+            Favourites
+        </a>
+
+        <a href="/privacy">
+            Privacy
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="outfit-details-page">
+
+
+    <a
+        href="/recommendations"
+        class="back-link"
+    >
+        ← Back to Recommendations
+    </a>
+
+
+    <div class="detail-grid">
+
+
+        <!-- LEFT: OUTFIT VISUAL -->
+
+        <section class="product-visual">
+
+            <div class="product-box">
+
+                {% if outfit.clothing_type and 'Dress' in outfit.clothing_type %}
+
+                    👗
+
+                {% elif outfit.clothing_type and
+                      ('Trouser' in outfit.clothing_type or
+                       'Pant' in outfit.clothing_type) %}
+
+                    👖
+
+                {% elif outfit.clothing_type and
+                      ('Shirt' in outfit.clothing_type or
+                       'Top' in outfit.clothing_type) %}
+
+                    👚
+
+                {% elif outfit.clothing_type and
+                      ('Traditional' in outfit.clothing_type) %}
+
+                    🥻
+
+                {% else %}
+
+                    👕
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT: DETAILS -->
+
+        <section class="detail-content">
+
+
+            <div class="eyebrow">
+
+                {{ outfit.category }}
+                ·
+                {{ outfit.occasion or 'Everyday' }}
+
+            </div>
+
+
+            <h1>
+
+                {{ outfit.outfit_name }}
+
+            </h1>
+
+
+            <div class="price">
+
+                ₹{{ '%.0f'|format(outfit.price or 0) }}
+
+            </div>
+
+
+            <p class="description">
+
+                {% if outfit.description %}
+
+                    {{ outfit.description }}
+
+                {% else %}
+
+                    This outfit is selected from the
+                    AI Style clothing database based on
+                    your personalized style profile.
+
+                {% endif %}
+
+            </p>
+
+
+            <!-- BASIC TAGS -->
+
+            <div class="tag-row">
+
+
+                {% if outfit.colour %}
+
+                    <span class="tag">
+                        🎨 Colour:
+                        {{ outfit.colour }}
+                    </span>
+
+                {% endif %}
+
+
+                {% if outfit.pattern %}
+
+                    <span class="tag">
+                        Pattern:
+                        {{ outfit.pattern }}
+                    </span>
+
+                {% endif %}
+
+
+                {% if outfit.style %}
+
+                    <span class="tag">
+                        Style:
+                        {{ outfit.style }}
+                    </span>
+
+                {% endif %}
+
+
+                {% if outfit.fit %}
+
+                    <span class="tag">
+                        Fit:
+                        {{ outfit.fit }}
+                    </span>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- OUTFIT INFORMATION -->
+
+            <div class="info-card">
+
+                <h3>
+                    Outfit Information
+                </h3>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Outfit ID
+                    </div>
+
+                    <div>
+                        {{ outfit.outfit_id }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Clothing Type
+                    </div>
+
+                    <div>
+                        {{ outfit.clothing_type or 'Not specified' }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Suitable Body Shapes
+                    </div>
+
+                    <div>
+                        {{ outfit.suitable_body_shapes or 'Not specified' }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Suitable Skin Tones
+                    </div>
+
+                    <div>
+                        {{ outfit.suitable_skin_tones or 'Not specified' }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Suitable Undertones
+                    </div>
+
+                    <div>
+                        {{ outfit.suitable_undertones or 'Not specified' }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Suitable Proportions
+                    </div>
+
+                    <div>
+                        {{ outfit.suitable_proportion_types or 'Not specified' }}
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Height Range
+                    </div>
+
+                    <div>
+
+                        {% if outfit.min_height_cm and outfit.max_height_cm %}
+
+                            {{ '%.0f'|format(outfit.min_height_cm) }}
+                            cm -
+                            {{ '%.0f'|format(outfit.max_height_cm) }}
+                            cm
+
+                        {% else %}
+
+                            Not specified
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-row">
+
+                    <div class="info-label">
+                        Store
+                    </div>
+
+                    <div>
+                        {{ outfit.product_store or 'AI Style Demo Catalogue' }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- WHY THIS OUTFIT -->
+
+            <div class="why-box">
+
+                <strong>
+                    ✨ Why this outfit?
+                </strong>
+
+                <p>
+
+                    This outfit has been selected from
+                    the clothing database according to
+                    the user's category, body shape,
+                    skin tone, undertone, body proportions
+                    and height compatibility.
+
+                </p>
+
+            </div>
+
+
+            <!-- ACTION BUTTONS -->
+
+            <div class="actions">
+
+                <a
+    class="primary-button"
+    href="{{ url_for('tryon', clothing_id=outfit.id) }}"
+>
+    ✨ Try This Look →
+</a>
+
+
+                <a
+                    href="/recommendations"
+                    class="secondary-button"
+                >
+                    ← More Recommendations
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+</main>
+
+
+<footer>
+
+    <div>
+        © 2026 AI Style
+    </div>
+
+    <a href="/privacy">
+        Privacy &amp; Security
+    </a>
+
+</footer>
+
+
+</body>
+
+</html>
